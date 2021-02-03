@@ -4,3 +4,13 @@ This contains docker provisioning scripts for services running in docker
 container on my NAS.
 
 To be used together with Ansible VM provisioning script. TODO: link.
+
+## Overview
+
+Traefik is the main point of contact from outside for all services. It provides
+reverse proxying with domain name access, e.g. `https://portainer.lan` instead
+of `https://vm03.lan:1337`. The other services are deployed on demand, with
+two necessary settings:
+
+- DNS CNAME pointing at docker host's IP address
+- docker labels in each container pushing dynamic configuration to Traefik
