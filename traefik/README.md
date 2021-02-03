@@ -1,31 +1,33 @@
 # Traefik Minimal Example for Private (Home) Network
 
-TODO: motivation, background, context
-
 This docker-compose provisions a Traefik container for reverse proxy with
 HTTPS/TLS enabled for the use in private/home network without a valid FQDN / domain name.
 
-What this tries to achieve is to give HTTPS capability of all services provided
-by docker containers.
+What this tries to achieve:
+- To give domain names to each services running on docker, `http://portainer.lan`
+  instead of `http://vm03.lan:1337`
+- HTTPS for all
 
 ## Use Case
 
 ```
-                                  ______________________________________
-                                 | Docker private network               |
-                                 |                                      |
-                                 |                                      |
-                                 |             ---> Heimdall            |
-Clients              HTTPS       |             |                        |
+                                    ____________________________________
+                                   | Docker private network             |
+                                   |                                    |
+                                   |                                    |
+                                   |           ---> Heimdall            |
+Clients              HTTPS         |           |                        |
 (Smartphone,      ---------> Reverse Proxy ----|--> Nextcloud           |
 Set Top Box, etc.)              Traefik        |                        |
-                                 |             |--> PiHole              |
-                                 |             |                        |
-                                 |             |--> PhotoPrism/         |
-                                 |             |    PhotoStructure      |
-                                 |             |                        |
-                                 |             ---> etc.                |
-                                 |______________________________________|
+                                   |           |--> PiHole              |
+                                   |           |                        |
+                                   |           |--> PhotoPrism/         |
+                                   |           |    PhotoStructure      |
+                                   |           |                        |
+                                   |           |--> Portainer           |
+                                   |           |                        |
+                                   |           ---> etc.                |
+                                   |____________________________________|
 
 ```
 
