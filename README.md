@@ -14,3 +14,27 @@ two necessary settings:
 
 - DNS CNAME pointing at docker host's IP address
 - docker labels in each container pushing dynamic configuration to Traefik
+
+
+## Use Case
+
+```
+                                    ____________________________________
+                                   | Docker private network             |
+                                   |                                    |
+                                   |                                    |
+                                   |           ---> Heimdall            |
+Clients              HTTPS         |           |                        |
+(Smartphone,      ---------> Reverse Proxy ----|--> Nextcloud           |
+Set Top Box, etc.)              Traefik        |                        |
+                                   |           |--> PiHole              |
+                                   |           |                        |
+                                   |           |--> PhotoPrism/         |
+                                   |           |    PhotoStructure      |
+                                   |           |                        |
+                                   |           |--> Portainer           |
+                                   |           |                        |
+                                   |           ---> etc.                |
+                                   |____________________________________|
+
+```

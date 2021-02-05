@@ -8,28 +8,6 @@ What this tries to achieve:
   instead of `http://vm03.lan:1337`
 - HTTPS for all
 
-## Use Case
-
-```
-                                    ____________________________________
-                                   | Docker private network             |
-                                   |                                    |
-                                   |                                    |
-                                   |           ---> Heimdall            |
-Clients              HTTPS         |           |                        |
-(Smartphone,      ---------> Reverse Proxy ----|--> Nextcloud           |
-Set Top Box, etc.)              Traefik        |                        |
-                                   |           |--> PiHole              |
-                                   |           |                        |
-                                   |           |--> PhotoPrism/         |
-                                   |           |    PhotoStructure      |
-                                   |           |                        |
-                                   |           |--> Portainer           |
-                                   |           |                        |
-                                   |           ---> etc.                |
-                                   |____________________________________|
-
-```
 
 ## Usage
 
@@ -44,6 +22,7 @@ openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout cert.key -out cert.
 # Questions will be asked, e.g. organization name, etc.
 ```
 4. `docker-compose up -d`
+
 
 ## TODO
 - Internal networking for all containers, traefik is the only one accessible
