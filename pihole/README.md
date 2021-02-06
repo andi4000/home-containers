@@ -37,7 +37,7 @@ $ docker port <TRAEFIK_CONTAINER_NAME>
 
 ```bash
 $ nslookup google.com vm03  # or replace vm03 with IP or hostname of docker host
-Server:         pi.hole
+Server:         vm03
 Address:        10.0.1.4#53
 
 Non-authoritative answer:
@@ -55,7 +55,7 @@ Name:   googleadservices.com
 Address: 142.250.186.130
 
 $ nslookup googleadservices.com vm03  # PiHole does
-Server:         vm99
+Server:         vm03
 Address:        10.0.1.170#53
 
 Name:   googleadservices.com
