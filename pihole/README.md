@@ -5,6 +5,9 @@
 - What do PiHole need port 443 open for?
 - write data to persistent volume on NAS for e.g. static DNS CNAME list
 - web admin password, check `environments` tag
+- chicken and egg problem --> how problematic is it when the DNS server is
+  running inside a container, hidden behind reverse proxy, which runs on a VM,
+  which runs on a NAS?
 
 ## Usage
 `systemd-resolved` is blocking port 53, thus making PiHole and Traefik unable to
