@@ -15,6 +15,19 @@ two necessary settings:
 - DNS CNAME pointing at docker host's IP address
 - docker labels in each container pushing dynamic configuration to Traefik
 
+e.g.
+
+```yaml
+# ...
+services:
+  my-app:
+    # ...
+    labels:
+      # Ref: https://traefik.io/blog/traefik-2-tls-101-23b4fbee81f1/
+      - "traefik.enable=true"
+      - "traefik.http.routers.my-app.rule=Host(`my-app.lan`)"
+      - "traefik.http.routers.my-app.tls=true"
+```
 
 ## Use Case
 
