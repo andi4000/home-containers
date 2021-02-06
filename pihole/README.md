@@ -7,7 +7,7 @@
 - web admin password, check `environments` tag
 - chicken and egg problem --> how problematic is it when the DNS server is
   running inside a container, hidden behind reverse proxy, which runs on a VM,
-  which runs on a NAS?
+  which runs on a NAS? Especially with `systemd-resolved` disabled
 
 ## Usage
 `systemd-resolved` is blocking port 53, thus making PiHole and Traefik unable to
