@@ -28,3 +28,6 @@ openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout cert.key -out cert.
 - Internal networking for all containers, traefik is the only one accessible
   from outside
 - Harden docker endpoint, using TCP socket or SSH instead of Unix socket. [Ref](https://doc.traefik.io/traefik/v2.3/providers/docker/#docker-api-access).
+
+## Possible Extension
+- htaccess username and password for Traefik dashboard --> [Reference](https://medium.com/@containeroo/traefik-2-0-docker-a-simple-step-by-step-guide-e0be0c17cfa5)
