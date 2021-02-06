@@ -1,0 +1,24 @@
+version: "3"
+
+services:
+  heimdall:
+    container_name: heimdall
+    image: ghcr.io/linuxserver/heimdall
+    networks:
+      - proxynet
+    # restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+    volumes:
+      # TODO: move to e.g. NFS mount
+      - ./config:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.heimdall.rule=Host(`heimdall.lan`)"
+      - "traefik.http.routers.heimdall.tls=true"
+
+networks:
+  proxynet:
+    external: true
