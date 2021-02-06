@@ -14,7 +14,7 @@ What this tries to achieve:
 1. Create local DNS entries for the domains (e.g. traefik.local) that points to
    the VM/server hosting the container. In PiHole: "Local DNS" > "CNAME
    Records".
-2. `docker network create proxynet`
+2. `docker network create traefiknet`
 3. Generate TLS certificates
 ```bash
 cd certs/

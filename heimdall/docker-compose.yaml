@@ -5,7 +5,7 @@ services:
     container_name: heimdall
     image: ghcr.io/linuxserver/heimdall
     networks:
-      - proxynet
+      - traefiknet
     restart: unless-stopped
     environment:
       - PUID=1000
@@ -20,5 +20,5 @@ services:
       - "traefik.http.routers.heimdall.tls=true"
 
 networks:
-  proxynet:
+  traefiknet:
     external: true

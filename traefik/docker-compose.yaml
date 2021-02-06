@@ -9,7 +9,7 @@ services:
       - 80:80
       - 443:443
     networks:
-      - proxynet
+      - traefiknet
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./traefik/traefik.yaml:/etc/traefik/traefik.yaml:ro
@@ -26,12 +26,12 @@ services:
     image: traefik/whoami
     container_name: whoami
     networks:
-      - proxynet
+      - traefiknet
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.whoami.rule=Host(`testcname.lan`)"
       - "traefik.http.routers.whoami.tls=true"
 
 networks:
-  proxynet:
+  traefiknet:
     external: true
