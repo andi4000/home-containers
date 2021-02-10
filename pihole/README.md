@@ -1,6 +1,7 @@
 # PiHole with Traefik Reverse Proxy
 
-## TODO:
+# TODO:
+- Fix host's DNS setting: [documentation](https://github.com/pi-hole/docker-pi-hole/#installing-on-ubuntu)
 - DNS over HTTPS? Port 853?
 - What do PiHole need port 443 open for?
 - write data to persistent volume on NAS for e.g. static DNS CNAME list
