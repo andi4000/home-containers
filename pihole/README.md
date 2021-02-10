@@ -1,7 +1,6 @@
 # PiHole with Traefik Reverse Proxy
 
 # TODO:
-- Fix host's DNS setting: [documentation](https://github.com/pi-hole/docker-pi-hole/#installing-on-ubuntu)
 - DNS over HTTPS? Port 853?
 - What do PiHole need port 443 open for?
 - write data to persistent volume on NAS for e.g. static DNS CNAME list
@@ -9,6 +8,12 @@
 - chicken and egg problem --> how problematic is it when the DNS server is
   running inside a container, hidden behind reverse proxy, which runs on a VM,
   which runs on a NAS? Especially with `systemd-resolved` disabled
+- Put all below here into ansible routine
+
+## Done
+- Docker host can't resolve mDNS/Avahi hosts --> use `REV_SERVER*` environment
+  variables
+- Fix host's DNS setting: [documentation](https://github.com/pi-hole/docker-pi-hole/#installing-on-ubuntu)
 
 ## Usage
 `systemd-resolved` is blocking port 53, thus making PiHole and Traefik unable to
@@ -16,8 +21,7 @@ start. But without it, the server won't have domain name resolution. So the
 trick is:
 
 1. `docker pull pihole/pihole:latest` to download pihole image
-2. `sudo service systemd-resolved stop` and `sudo systemctl disable
-   systemd-resolved`
+2. `sudo service systemd-resolved stop`
 3. Make sure `systemd-resolved` completely ded: `ps aux | grep resolved`
 
 Then proceed with PiHole:
@@ -68,6 +72,25 @@ Address: ::
 
 7. Set IP address of the docker host to be system-wide DNS resolver on your
    network
+8. Fix DNS setting of docker host
+    a. set `DNSStubListener=no` in `/etc/systemd/resolved.conf`
+    b. `sudo mv /etc/resolv.conf /etc/resolv.conf.orig`
+    c. `sudo ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf`
+    d. `sudo systemctl restart systemd-resolved`
+    e. configure your netplan in `/etc/netplan/*.yaml` like this example:
+        ```yaml
+        network:
+            ethernets:
+                enps0e4:
+                    dhcp4: true
+                    dhcp4-overrides:
+                        use-dns: false
+                    nameservers:
+                        addresses: [127.0.0.1]
+            version: 2
+        ```
+    f. `sudo netplan apply`
+    g. check if `/etc/resolv.conf` contains `127.0.0.1` as nameserver
 
 
 ## References:
