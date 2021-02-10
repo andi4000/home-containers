@@ -6,7 +6,15 @@ services:
     image: pihole/pihole:latest
     restart: unless-stopped
     environment:
+      # Documentation: https://github.com/pi-hole/docker-pi-hole
       TZ: "Europe/Berlin"
+      # WEBPASSWORD: TODO
+      # To enable hostname resolution of local devices
+      # WARNING: this is specific to my home network
+      REV_SERVER: "true"
+      REV_SERVER_DOMAIN: "lan"
+      REV_SERVER_TARGET: "10.0.1.1"  # router address
+      REV_SERVER_CIDR: "10.0.1.0/24"
     networks:
       - traefiknet
     volumes:
