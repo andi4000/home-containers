@@ -29,7 +29,7 @@ services:
       PHOTOPRISM_DATABASE_NAME: ${MYSQL_DB_NAME}
       PHOTOPRISM_DATABASE_USER: ${MYSQL_DB_USER}
       PHOTOPRISM_DATABASE_PASSWORD: ${MYSQL_DB_PASS}
-      PHOTOPRISM_SITE_URL: "http://photoprism.lan/"
+      PHOTOPRISM_SITE_URL: ${PHOTOPRISM_SITE_URL}
       PHOTOPRISM_SITE_TITLE: "PhotoPrism"
       PHOTOPRISM_SITE_CAPTION: "Browse Your Life"
       PHOTOPRISM_SITE_DESCRIPTION: ""
@@ -46,7 +46,7 @@ services:
       - photoprism-storage:/photoprism/storage
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.photoprism.rule=Host(`photoprism.lan`)"
+      - "traefik.http.routers.photoprism.rule=Host(`${PHOTOPRISM_SITE_URL}`)"
       - "traefik.http.services.photoprism-service.loadbalancer.server.port=2342"
       - "traefik.http.routers.photoprism.tls=true"
 
