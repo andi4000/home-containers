@@ -10,6 +10,10 @@ api:
 # Comment to disable
 accessLog: {}
 
+# Uncomment on fire
+# log:
+#  level: DEBUG
+
 # Ref: https://doc.traefik.io/traefik/routing/entrypoints/#redirection
 entryPoints:
   web:
