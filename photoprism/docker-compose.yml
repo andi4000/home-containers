@@ -85,7 +85,6 @@ volumes:
     driver_opts:
       type: nfs
       o: "addr=${NFS_ADDR},nolock,soft,rw"
-      # device: ":/mnt/pool01/shares/family_media"
       device: ":${NFS_PATH_PHOTOS}"
 
 networks:
