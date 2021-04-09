@@ -25,6 +25,7 @@ services:
     labels:
       # Ref: https://traefik.io/blog/traefik-2-tls-101-23b4fbee81f1/
       - "traefik.enable=true"
+      - "traefik.docker.network=traefiknet"  # if container has multiple networks
       - "traefik.http.routers.my-app.rule=Host(`my-app.lan`)"
       - "traefik.http.routers.my-app.tls=true"
 ```
