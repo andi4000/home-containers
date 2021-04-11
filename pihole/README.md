@@ -73,11 +73,11 @@ Address: ::
 7. Set IP address of the docker host to be system-wide DNS resolver on your
    network
 8. Fix DNS setting of docker host
-    a. set `DNSStubListener=no` in `/etc/systemd/resolved.conf`
-    b. `sudo mv /etc/resolv.conf /etc/resolv.conf.orig`
-    c. `sudo ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf`
-    d. `sudo systemctl restart systemd-resolved`
-    e. configure your netplan in `/etc/netplan/*.yaml` like this example:
+    1. set `DNSStubListener=no` in `/etc/systemd/resolved.conf`
+    2. `sudo mv /etc/resolv.conf /etc/resolv.conf.orig`
+    3. `sudo ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf`
+    4. `sudo systemctl restart systemd-resolved`
+    5. configure your netplan in `/etc/netplan/*.yaml` like this example:
         ```yaml
         network:
             ethernets:
@@ -89,8 +89,8 @@ Address: ::
                         addresses: [127.0.0.1]
             version: 2
         ```
-    f. `sudo netplan apply`
-    g. check if `/etc/resolv.conf` contains `127.0.0.1` as nameserver
+    6. `sudo netplan apply`
+    7. check if `/etc/resolv.conf` contains `127.0.0.1` as nameserver
 
 
 ## References:
