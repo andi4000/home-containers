@@ -1,0 +1,95 @@
+version: "3"
+
+# Based on: https://github.com/nextcloud/docker/blob/master/.examples/docker-compose/insecure/mariadb/apache/docker-compose.yml
+# Full documentation on github
+# Nextcloud CLI:
+#   docker-compose exec --user www-data app php occ
+
+# volumes:
+#   nextcloud-webroot:
+#     driver: local
+#     driver_opts:
+#       type: nfs
+#       o: "addr=${NFS_ADDR},nolock,soft,rw"
+#       device: ":${NFS_PATH_WEBROOT}"
+#   nextcloud-userdata:
+#     driver: local
+#     driver_opts:
+#       type: nfs
+#       o: "addr=${NFS_ADDR},nolock,soft,rw"
+#       device: ":${NFS_PATH_USERDATA}"
+#   nextcloud-db:
+#     driver: local
+#     driver_opts:
+#       type: nfs
+#       o: "addr=${NFS_ADDR},nolock,soft,rw"
+#       device: ":${NFS_PATH_DB}"
+
+services:
+  db:
+    image: mariadb
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    volumes:
+      - ./db:/var/lib/mysql
+    networks:
+      - nextcloud_internal
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+
+  redis:
+    image: redis:alpine
+    restart: always
+    networks:
+      - nextcloud_internal
+
+  cron:
+    image: nextcloud:apache
+    restart: always
+    networks:
+      - nextcloud_internal
+    volumes:
+      - ./nextcloud-webroot:/var/www/html
+    entrypoint: /cron.sh
+    depends_on:
+      - db
+      - redis
+
+  app:
+    image: nextcloud:apache
+    restart: always
+    networks:
+      - nextcloud_internal
+      - traefiknet
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./nextcloud-webroot:/var/www/html
+      - ./nextcloud-userdata:/data
+    environment:
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_HOST=db
+      - REDIS_HOST=redis
+      - NEXTCLOUD_DATA_DIR=/data
+      - NEXTCLOUD_TRUSTED_DOMAINS=${NEXTCLOUD_DOMAIN}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefiknet"
+      - "traefik.http.routers.nextcloud.rule=Host(`${NEXTCLOUD_DOMAIN}`)"
+      - "traefik.http.routers.nextcloud.tls=true"
+      - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
+      - "traefik.http.middlewares.nextcloud-redirectregex.redirectRegex.permanent=true"
+      - "traefik.http.middlewares.nextcloud-redirectregex.redirectRegex.regex=^https://(.*)/.well-known/(card|cal)dav"
+      - "traefik.http.middlewares.nextcloud-redirectregex.redirectRegex.replacement=https://$${1}/remote.php/dav/"
+
+networks:
+  traefiknet:
+    external: true
+  nextcloud_internal:
+    internal: true
