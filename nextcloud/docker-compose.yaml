@@ -4,6 +4,11 @@ version: "3"
 # Full documentation on github
 # Nextcloud CLI:
 #   docker-compose exec --user www-data app php occ
+#
+# TODO:
+#   - test NFS volumes
+#   - fix reverse proxy settings for apache (nextcloud admin > overview)
+#   - stress test
 
 # volumes:
 #   nextcloud-webroot:
