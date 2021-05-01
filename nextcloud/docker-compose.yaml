@@ -100,6 +100,11 @@ services:
       - "traefik.http.middlewares.nextcloud-dav.redirectRegex.permanent=true"
       - "traefik.http.middlewares.nextcloud-dav.redirectRegex.regex=^https://(.*)/.well-known/(card|cal)dav"
       - "traefik.http.middlewares.nextcloud-dav.redirectRegex.replacement=https://$${1}/remote.php/dav/"
+      - "traefik.http.middlewares.nextcloud-sts.headers.stsincludesubdomains=false"
+      - "traefik.http.middlewares.nextcloud-sts.headers.stspreload=true"
+      - "traefik.http.middlewares.nextcloud-sts.headers.stsseconds=31536000"
+      - "traefik.http.middlewares.nextcloud-sts.headers.isdevelopment=false"
+      - "traefik.http.routers.nextcloud.middlewares=nextcloud-dav,nextcloud-sts"
 
 networks:
   traefiknet:
