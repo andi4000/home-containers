@@ -1,7 +1,11 @@
 version: "3"
 
-# Based on: https://github.com/nextcloud/docker/blob/master/.examples/docker-compose/insecure/mariadb/apache/docker-compose.yml
+# Based on:
+#   - https://github.com/nextcloud/docker/blob/master/.examples/docker-compose/insecure/mariadb/apache/docker-compose.yml
+#   - https://goneuland.de/nextcloud-server-mit-docker-compose-und-traefik-installieren/#6_Optimierungen
+#
 # Full documentation on github
+#
 # Nextcloud CLI:
 #   docker-compose exec --user www-data app php occ
 #
@@ -83,6 +87,10 @@ services:
       - REDIS_HOST=redis
       - NEXTCLOUD_DATA_DIR=/data
       - NEXTCLOUD_TRUSTED_DOMAINS=${NEXTCLOUD_DOMAIN}
+      - APACHE_DISABLE_REWRITE_IP=1
+      - TRUSTED_PROXIES=${TRAEFIK_ADDRESS}
+      - OVERWRITEHOST=${NEXTCLOUD_DOMAIN}
+      - OVERWRITEPROTOCOL=https
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefiknet"
