@@ -22,25 +22,19 @@ version: "3"
 #   - test NFS volumes --> not for webroot, due to PHP file locking situation
 #   - fix reverse proxy settings for apache (nextcloud admin > overview)
 
-# volumes:
-#   nextcloud-webroot:
-#     driver: local
-#     driver_opts:
-#       type: nfs
-#       o: "addr=${NFS_ADDR},nolock,soft,rw"
-#       device: ":${NFS_PATH_WEBROOT}"
-#   nextcloud-userdata:
-#     driver: local
-#     driver_opts:
-#       type: nfs
-#       o: "addr=${NFS_ADDR},nolock,soft,rw"
-#       device: ":${NFS_PATH_USERDATA}"
-#   nextcloud-db:
-#     driver: local
-#     driver_opts:
-#       type: nfs
-#       o: "addr=${NFS_ADDR},nolock,soft,rw"
-#       device: ":${NFS_PATH_DB}"
+volumes:
+  nextcloud-userdata:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${NFS_ADDR},nolock,soft,rw"
+      device: ":${NFS_PATH_USERDATA}"
+  nextcloud-db:
+    driver: local
+    driver_opts:
+      type: nfs
+      o: "addr=${NFS_ADDR},nolock,soft,rw"
+      device: ":${NFS_PATH_DB}"
 
 services:
   db:
@@ -48,7 +42,7 @@ services:
     restart: always
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     volumes:
-      - ./db:/var/lib/mysql
+      - nextcloud-db:/var/lib/mysql
     networks:
       - nextcloud_internal
     environment:
@@ -69,7 +63,7 @@ services:
     networks:
       - nextcloud_internal
     volumes:
-      - ./nextcloud-webroot:/var/www/html
+      - ./webroot:/var/www/html
     entrypoint: /cron.sh
     depends_on:
       - db
@@ -85,8 +79,8 @@ services:
       - db
       - redis
     volumes:
-      - ./nextcloud-webroot:/var/www/html
-      - ./nextcloud-userdata:/data
+      - nextcloud-userdata:/data
+      - ./webroot:/var/www/html
     environment:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
