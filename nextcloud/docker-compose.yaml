@@ -17,6 +17,7 @@ version: "3"
 # TODO:
 #   - test update
 #   - stress test
+#   - occassional error cron cannot run due to permission error (nextcloud admin > overview)
 #
 # DONE:
 #   - test NFS volumes --> not for webroot, due to PHP file locking situation
