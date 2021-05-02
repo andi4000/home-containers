@@ -9,10 +9,18 @@ version: "3"
 # Nextcloud CLI:
 #   docker-compose exec --user www-data app php occ
 #
+# To update:
+#   docker-compose down
+#   docker-compose pull
+#   docker-compose up -d
+#
 # TODO:
-#   - test NFS volumes
-#   - fix reverse proxy settings for apache (nextcloud admin > overview)
+#   - test update
 #   - stress test
+#
+# DONE:
+#   - test NFS volumes --> not for webroot, due to PHP file locking situation
+#   - fix reverse proxy settings for apache (nextcloud admin > overview)
 
 # volumes:
 #   nextcloud-webroot:
