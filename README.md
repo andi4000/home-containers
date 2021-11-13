@@ -52,3 +52,15 @@ Set Top Box, etc.)              Traefik        |                        |
                                    |____________________________________|
 
 ```
+
+## Usage
+
+Prep:
+```bash
+# On vanilla Ubuntu 20.04
+sudo apt install docker.io
+sudo apt install python3-pip
+sudo pip2 install docker-compose
+sudo usermod -aG docker $(whoami)
+newgrp docker
+```
