@@ -15,7 +15,6 @@ version: "3"
 #   docker-compose up -d
 #
 # TODO:
-#   - test update
 #   - stress test
 #
 # DONE:
@@ -23,6 +22,8 @@ version: "3"
 #   - fix reverse proxy settings for apache (nextcloud admin > overview)
 #   - occassional error cron cannot run due to permission error (nextcloud admin > overview)
 #     --> data folder was not mounted in cron container
+#   - test update --> ran with above instructions, update docker, then run update on web.
+#     No problem from v20 to v21
 #
 # Troubleshooting:
 #   - can not mount NFS volume, permission denied --> check if `showmount -e YOURNAS`
