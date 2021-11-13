@@ -1,38 +1,6 @@
 version: "3"
 
 services:
-  reverse-proxy:
-    image: traefik:v2.4
-    container_name: traefik
-    restart: always
-    ports:
-      - 80:80
-      - 443:443
-      - 53:53/tcp
-      - 53:53/udp
-    networks:
-      - traefiknet
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ./traefik/traefik.yaml:/etc/traefik/traefik.yaml:ro
-      - ./traefik/dynconfig.yaml:/etc/traefik/dynconfig.yaml:ro
-      - ./certs:/certs:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.lan`)"
-      - "traefik.http.routers.traefik.tls=true"
-      - "traefik.http.routers.traefik.service=api@internal"
-
-  whoami:
-    image: traefik/whoami
-    container_name: whoami
-    networks:
-      - traefiknet
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`testcname.lan`)"
-      - "traefik.http.routers.whoami.tls=true"
 
 networks:
   traefiknet:
