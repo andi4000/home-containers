@@ -17,11 +17,12 @@ version: "3"
 # TODO:
 #   - test update
 #   - stress test
-#   - occassional error cron cannot run due to permission error (nextcloud admin > overview)
 #
 # DONE:
 #   - test NFS volumes --> not for webroot, due to PHP file locking situation
 #   - fix reverse proxy settings for apache (nextcloud admin > overview)
+#   - occassional error cron cannot run due to permission error (nextcloud admin > overview)
+#     --> data folder was not mounted in cron container
 #
 # Troubleshooting:
 #   - can not mount NFS volume, permission denied --> check if `showmount -e YOURNAS`
@@ -68,11 +69,14 @@ services:
     networks:
       - nextcloud_internal
     volumes:
+      - nextcloud-userdata:/data
       - ./webroot:/var/www/html
     entrypoint: /cron.sh
     depends_on:
       - db
       - redis
+    environment:
+      - NEXTCLOUD_DATA_DIR=/data
 
   app:
     image: nextcloud:apache
