@@ -22,6 +22,10 @@ version: "3"
 # DONE:
 #   - test NFS volumes --> not for webroot, due to PHP file locking situation
 #   - fix reverse proxy settings for apache (nextcloud admin > overview)
+#
+# Troubleshooting:
+#   - can not mount NFS volume, permission denied --> check if `showmount -e YOURNAS`
+#     gives something back, otherwise fix the permission (authorized host) on your NAS
 
 volumes:
   nextcloud-userdata:
