@@ -17,11 +17,11 @@ services:
       - ./traefik/traefik.yaml:/etc/traefik/traefik.yaml:ro
       - ./letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    command:
       # TODO: this does not work, auto routing to container names
+      # command:
       # https://blog.thesparktree.com/traefik-advanced-config#automatic-subdomain-routing
-      - "--providers.docker.network=traefiknet"
-      - "--providers.docker.defaultRule=Host(`{{ normalize .Name}}.${DOMAIN_NAME}`)"
+      #   - "--providers.docker.network=traefiknet"
+      #   - "--providers.docker.defaultRule=Host(`{{ normalize .Name}}.${DOMAIN_NAME}`)"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN_NAME:?domain unset}`)"
