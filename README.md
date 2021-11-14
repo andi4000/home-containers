@@ -8,12 +8,16 @@ To be used together with Ansible VM provisioning script. TODO: link.
 ## Overview
 
 Traefik is the main point of contact from outside for all services. It provides
-reverse proxying with domain name access, e.g. `https://portainer.lan` instead
-of `https://vm03.lan:1337`. The other services are deployed on demand, with
-two necessary settings:
+reverse proxying with domain name access, e.g. `https://portainer.YOURDOMAIN.com` instead
+of `https://vm03.lan:1337`. Also valid HTTPS certificate from LetsEncrypt is very nice.
 
-- DNS CNAME pointing at docker host's IP address
-- docker labels in each container pushing dynamic configuration to Traefik
+This requires a valid public domain name (ca. 5 EUR/year), and public DNS entry pointing
+to the VM private IP address. Your VM/server's IP address will be public, yes. Is it insecure?
+I don't think so. It's one step away from IP scan anyway.
+
+Additionally you could add wildcard CNAME record pointing to the VM for
+automatic DNS resolving. With this, other services can be deployed on demand, with only
+docker label necessary in each container pushing dynamic configuration to Traefik.
 
 e.g.
 
@@ -26,7 +30,7 @@ services:
       # Ref: https://traefik.io/blog/traefik-2-tls-101-23b4fbee81f1/
       - "traefik.enable=true"
       - "traefik.docker.network=traefiknet"  # if container has multiple networks
-      - "traefik.http.routers.my-app.rule=Host(`my-app.lan`)"
+      - "traefik.http.routers.my-app.rule=Host(`my-app.YOURDOMAIN.com`)"
       - "traefik.http.routers.my-app.tls=true"
 ```
 
@@ -63,4 +67,6 @@ sudo apt install python3-pip
 sudo pip3 install docker-compose
 sudo usermod -aG docker $(whoami)
 newgrp docker
+
+docker network create traefiknet
 ```
