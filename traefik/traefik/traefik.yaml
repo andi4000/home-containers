@@ -36,5 +36,11 @@ providers:
     endpoint: "unix:///var/run/docker.sock"
     # each docker container need to have label "traefik.enable=true"
     exposedByDefault: false
-  file:
-    filename: /etc/traefik/dynconfig.yaml
+
+certificatesResolvers:
+   le:
+     acme:
+       storage: "/letsencrypt/acme.json"
+       dnsChallenge:
+         provider: cloudflare
+         delayBeforeCheck: 0

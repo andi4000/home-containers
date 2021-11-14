@@ -15,14 +15,24 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./traefik/traefik.yaml:/etc/traefik/traefik.yaml:ro
-      - ./traefik/dynconfig.yaml:/etc/traefik/dynconfig.yaml:ro
-      - ./certs:/certs:ro
+      - ./letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    command:
+      # TODO: this does not work, auto routing to container names
+      # https://blog.thesparktree.com/traefik-advanced-config#automatic-subdomain-routing
+      - "--providers.docker.network=traefiknet"
+      - "--providers.docker.defaultRule=Host(`{{ normalize .Name}}.${DOMAIN_NAME}`)"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.lan`)"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN_NAME:?domain unset}`)"
       - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.routers.traefik.tls.certresolver=le"
       - "traefik.http.routers.traefik.service=api@internal"
+      # https://community.traefik.io/t/lets-encrypt-for-a-lot-of-domains-automatically/2726/9
+      - "traefik.http.routers.traefik.tls.domains[0].main=${DOMAIN_NAME:?domain unset}"
+      - "traefik.http.routers.traefik.tls.domains[0].sans=*.${DOMAIN_NAME:?domain unset}"
+    environment:
+      - CF_DNS_API_TOKEN
 
   whoami:
     image: traefik/whoami
@@ -31,7 +41,7 @@ services:
       - traefiknet
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`testcname.lan`)"
+      - "traefik.http.routers.whoami.rule=Host(`whoami.${DOMAIN_NAME}`)"
       - "traefik.http.routers.whoami.tls=true"
 
 networks:
