@@ -34,14 +34,14 @@ volumes:
     driver: local
     driver_opts:
       type: nfs
-      o: "addr=${NFS_ADDR},nolock,soft,rw"
-      device: ":${NFS_PATH_USERDATA}"
+      o: "addr=${NFS_ADDR?},nolock,soft,rw"
+      device: ":${NFS_PATH_USERDATA?}"
   nextcloud-db:
     driver: local
     driver_opts:
       type: nfs
-      o: "addr=${NFS_ADDR},nolock,soft,rw"
-      device: ":${NFS_PATH_DB}"
+      o: "addr=${NFS_ADDR?},nolock,soft,rw"
+      device: ":${NFS_PATH_DB?}"
 
 services:
   db:
@@ -53,10 +53,10 @@ services:
     networks:
       - nextcloud_internal
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD?}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD?}
+      - MYSQL_DATABASE=${MYSQL_DATABASE?}
+      - MYSQL_USER=${MYSQL_USER?}
 
   redis:
     image: redis:alpine
@@ -98,15 +98,15 @@ services:
       - MYSQL_HOST=db
       - REDIS_HOST=redis
       - NEXTCLOUD_DATA_DIR=/data
-      - NEXTCLOUD_TRUSTED_DOMAINS=${NEXTCLOUD_DOMAIN}
+      - NEXTCLOUD_TRUSTED_DOMAINS=${NEXTCLOUD_DOMAIN?}
       - APACHE_DISABLE_REWRITE_IP=1
-      - TRUSTED_PROXIES=${TRAEFIK_ADDRESS}
+      - TRUSTED_PROXIES=${TRAEFIK_ADDRESS?}
       - OVERWRITEHOST=${NEXTCLOUD_DOMAIN}
       - OVERWRITEPROTOCOL=https
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefiknet"
-      - "traefik.http.routers.nextcloud.rule=Host(`${NEXTCLOUD_DOMAIN}`)"
+      - "traefik.http.routers.nextcloud.rule=Host(`${NEXTCLOUD_DOMAIN?}`)"
       - "traefik.http.routers.nextcloud.tls=true"
       - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
       - "traefik.http.middlewares.nextcloud-dav.redirectRegex.permanent=true"
