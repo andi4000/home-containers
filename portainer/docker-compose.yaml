@@ -13,7 +13,7 @@ services:
       - portainer_data:/data
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.portainer.rule=Host(`portainer.lan`)"
+      - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAIN_NAME}`)"
       - "traefik.http.routers.portainer.tls=true"
       - "traefik.http.services.portainer-service.loadbalancer.server.port=9000"
 
