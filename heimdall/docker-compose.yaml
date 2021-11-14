@@ -16,7 +16,7 @@ services:
       - ./config:/config
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.heimdall.rule=Host(`heimdall.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.heimdall.rule=Host(`heimdall.${DOMAIN_NAME?}`)"
       - "traefik.http.routers.heimdall.tls=true"
 
 networks:
