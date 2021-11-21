@@ -16,7 +16,7 @@ services:
       - traefiknet
       - photoprism_internal
     environment:
-      PHOTOPRISM_ADMIN_PASSWORD: ${PHOTOPRISM_ADMIN_PASSWORD}
+      PHOTOPRISM_ADMIN_PASSWORD: ${PHOTOPRISM_ADMIN_PASSWORD?}
       PHOTOPRISM_HTTP_PORT: 2342
       PHOTOPRISM_HTTP_COMPRESSION: "gzip"            # Improves transfer speed and bandwidth utilization (none or gzip)
       PHOTOPRISM_DEBUG: "false"
@@ -31,10 +31,10 @@ services:
       PHOTOPRISM_UPLOAD_NSFW: "true"                 # Allow uploads that MAY be offensive
       PHOTOPRISM_DATABASE_DRIVER: "mysql"            # Use MariaDB (or MySQL) instead of SQLite for improved performance
       PHOTOPRISM_DATABASE_SERVER: "mariadb:3306"     # MariaDB database server (hostname:port)
-      PHOTOPRISM_DATABASE_NAME: ${MYSQL_DB_NAME}
-      PHOTOPRISM_DATABASE_USER: ${MYSQL_DB_USER}
-      PHOTOPRISM_DATABASE_PASSWORD: ${MYSQL_DB_PASS}
-      PHOTOPRISM_SITE_URL: "http://${PHOTOPRISM_SITE_URL}"
+      PHOTOPRISM_DATABASE_NAME: ${MYSQL_DB_NAME?}
+      PHOTOPRISM_DATABASE_USER: ${MYSQL_DB_USER?}
+      PHOTOPRISM_DATABASE_PASSWORD: ${MYSQL_DB_PASS?}
+      PHOTOPRISM_SITE_URL: "http://${PHOTOPRISM_SITE_URL?}"
       PHOTOPRISM_SITE_TITLE: "PhotoPrism"
       PHOTOPRISM_SITE_CAPTION: "Browse Your Life"
       PHOTOPRISM_SITE_DESCRIPTION: ""
@@ -69,30 +69,30 @@ services:
     volumes: # Don't remove permanent storage for index database files!
       - photoprism-database:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASS}
-      MYSQL_DATABASE: ${MYSQL_DB_NAME}
-      MYSQL_USER: ${MYSQL_DB_USER}
-      MYSQL_PASSWORD: ${MYSQL_DB_PASS}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASS?}
+      MYSQL_DATABASE: ${MYSQL_DB_NAME?}
+      MYSQL_USER: ${MYSQL_DB_USER?}
+      MYSQL_PASSWORD: ${MYSQL_DB_PASS?}
 
 volumes:
   photoprism-database:
     driver: local
     driver_opts:
       type: nfs
-      o: "addr=${NFS_ADDR},nolock,soft,rw"
-      device: ":${NFS_PATH_DB}"
+      o: "addr=${NFS_ADDR?},nolock,soft,rw"
+      device: ":${NFS_PATH_DB?}"
   photoprism-storage:
     driver: local
     driver_opts:
       type: nfs
-      o: "addr=${NFS_ADDR},nolock,soft,rw"
-      device: ":${NFS_PATH_STORAGE}"
+      o: "addr=${NFS_ADDR?},nolock,soft,rw"
+      device: ":${NFS_PATH_STORAGE?}"
   photoprism-originals:
     driver: local
     driver_opts:
       type: nfs
-      o: "addr=${NFS_ADDR},nolock,soft,rw"
-      device: ":${NFS_PATH_PHOTOS}"
+      o: "addr=${NFS_ADDR?},nolock,soft,rw"
+      device: ":${NFS_PATH_PHOTOS?}"
 
 networks:
   traefiknet:
