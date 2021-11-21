@@ -91,9 +91,9 @@ volumes:
   photoprism-originals:
     driver: local
     driver_opts:
-      type: nfs
-      o: "addr=${NFS_ADDR?},nolock,soft,rw"
-      device: ":${NFS_PATH_PHOTOS?}"
+      type: cifs
+      o: "username=${SMB_USER?},password=${SMB_PASS?}"
+      device: ${SMB_PATH_MEDIA?}
 
 networks:
   traefiknet:
