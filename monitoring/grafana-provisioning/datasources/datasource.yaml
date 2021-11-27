@@ -1,0 +1,9 @@
+apiVersion: 1
+
+datasources:
+  - name: TrueNAS
+    type: influxdb
+    access: proxy
+    database: graphite
+    url: http://influxdb:8086
+    editable: false
