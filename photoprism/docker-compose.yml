@@ -42,6 +42,7 @@ services:
       PHOTOPRISM_SITE_DESCRIPTION: ""
       PHOTOPRISM_SITE_AUTHOR: ""
       PHOTOPRISM_ORIGINALS_LIMIT: 2000              # allow files <2GB
+      HOME: "/photoprism"
       # You may optionally set a user / group id using environment variables if your Docker version or NAS does not
       # support this natively (see next example):
       # UID: 1000
