@@ -59,6 +59,22 @@ services:
       - "traefik.http.routers.photoprism.rule=Host(`${PHOTOPRISM_SITE_URL}`)"
       - "traefik.http.services.photoprism-service.loadbalancer.server.port=2342"
       - "traefik.http.routers.photoprism.tls=true"
+      - "ofelia.enabled=true"
+      - "ofelia.job-exec.pp-import.schedule=@every 4h"
+      - "ofelia.job-exec.pp-import.command=photoprism index --cleanup"
+      - "ofelia.job-exec.pp-import.no-overlap=true"
+
+  # Ref: https://github.com/mcuadros/ofelia
+  jobrunner:
+    image: mcuadros/ofelia:latest
+    restart: unless-stopped
+    command: daemon --docker
+    depends_on:
+      - photoprism
+    networks:
+      - photoprism_internal
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 
   mariadb:
     image: mariadb:10.5
