@@ -44,8 +44,7 @@ services:
       # TODO: make multiline work, ref: INFLUXDB_GRAPHITE_0_TEMPLATES_0
       - INFLUXDB_GRAPHITE_TEMPLATES=*.app env.service.resource.measurement,servers.* .host.resource.measurement.field*
     ports:
-      - 8086:8086
-      - 2003:2003
+      - 2003:2003  # Graphite endpoint for truenas
 
   grafana:
     image: grafana/grafana:8.2.5
