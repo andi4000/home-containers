@@ -43,8 +43,11 @@ services:
       - INFLUXDB_GRAPHITE_ENABLED=true
       # TODO: make multiline work, ref: INFLUXDB_GRAPHITE_0_TEMPLATES_0
       - INFLUXDB_GRAPHITE_TEMPLATES=*.app env.service.resource.measurement,servers.* .host.resource.measurement.field*
+      - INFLUXDB_UDP_ENABLED=true
+      - INFLUXDB_UDP_DATABASE=traefik
     ports:
-      - 2003:2003  # Graphite endpoint for truenas
+      - 2003:2003       # Graphite endpoint for truenas
+      - 8089:8089/udp   # UDP endpoint for traefik
 
   grafana:
     image: grafana/grafana:8.2.5
