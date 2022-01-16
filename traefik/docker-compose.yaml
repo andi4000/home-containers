@@ -8,7 +8,7 @@ services:
     command:
       - "--global.sendAnonymousUsage=false"
       - "--accessLog=true"
-      - "--log.level=DEBUG"
+      # - "--log.level=DEBUG"
       - "--api.dashboard=true"
       - "--entryPoints.websecure.address=:443"
       - "--entryPoints.websecure.http.tls=true"
