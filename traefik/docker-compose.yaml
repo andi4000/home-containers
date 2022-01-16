@@ -19,6 +19,10 @@ services:
       - "--certificatesResolvers.le.acme.storage=/letsencrypt/acme.json"
       - "--certificatesResolvers.le.acme.dnsChallenge.provider=cloudflare"
       - "--certificatesResolvers.le.acme.dnsChallenge.delayBeforeCheck=0"
+      # Auto routing to compose project, automatically appending TLD
+      # https://blog.thesparktree.com/traefik-advanced-config#automatic-subdomain-routing
+      # - "--providers.docker.network=traefiknet"
+      # - "--providers.docker.defaultRule=Host(`{{ index .Labels \"com.docker.compose.project\" }}.${DOMAIN_NAME:?domain unset}`)"
       # Ref: https://doc.traefik.io/traefik/observability/metrics/influxdb/
       - "--metrics.influxDB.address=${DOMAIN_NAME:?}:8089"
       - "--metrics.influxDB.database=traefik"
@@ -31,11 +35,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ./letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      # TODO: this does not work, auto routing to container names
-      # command:
-      # https://blog.thesparktree.com/traefik-advanced-config#automatic-subdomain-routing
-      #   - "--providers.docker.network=traefiknet"
-      #   - "--providers.docker.defaultRule=Host(`{{ normalize .Name}}.${DOMAIN_NAME}`)"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN_NAME:?domain unset}`)"
