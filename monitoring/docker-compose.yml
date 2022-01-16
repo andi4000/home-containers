@@ -34,7 +34,7 @@ services:
     volumes:
       - storage-influxdb:/var/lib/influxdb
     networks:
-      - traefiknet
+      - mon_network
     environment:
       # TODO: clean up auth, see ref above
       - INFLUXDB_ADMIN_ENABLED=true
@@ -64,6 +64,7 @@ services:
       - influxdb
     networks:
       - traefiknet
+      - mon_network
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.grafana.rule=Host(`mon.${DOMAIN_NAME?}`)"
@@ -71,5 +72,6 @@ services:
       - "traefik.services.grafana.loadbalancer.server.port=3000"
 
 networks:
+  mon_network:
   traefiknet:
     external: true
