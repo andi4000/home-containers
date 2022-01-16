@@ -25,11 +25,11 @@ entryPoints:
           scheme: https
   websecure:
     address: ":443"
-  # DNS for PiHole
-  53-udp:
-    address: ":53/udp"
-  53-tcp:
-    address: ":53"
+  ## DNS for PiHole
+  # 53-udp:
+  #   address: ":53/udp"
+  # 53-tcp:
+  #   address: ":53"
 
 providers:
   docker:
