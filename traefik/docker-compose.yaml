@@ -5,6 +5,23 @@ services:
     image: traefik:v2.4
     container_name: traefik
     restart: always
+    command:
+      - "--global.sendAnonymousUsage=false"
+      - "--accessLog=true"
+      - "--log.level=DEBUG"
+      - "--api.dashboard=true"
+      - "--entryPoints.websecure.address=:443"
+      - "--entryPoints.web.address=:80"
+      - "--entryPoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entryPoints.web.http.redirections.entryPoint.scheme=https"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedByDefault=false"
+      - "--certificatesResolvers.le.acme.storage=/letsencrypt/acme.json"
+      - "--certificatesResolvers.le.acme.dnsChallenge.provider=cloudflare"
+      - "--certificatesResolvers.le.acme.dnsChallenge.delayBeforeCheck=0"
+      # Ref: https://doc.traefik.io/traefik/observability/metrics/influxdb/
+      - "--metrics.influxDB.address=${DOMAIN_NAME:?}:8089"
+      - "--metrics.influxDB.database=traefik"
     ports:
       - 80:80
       - 443:443
@@ -12,7 +29,6 @@ services:
       - traefiknet
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./traefik/traefik.yaml:/etc/traefik/traefik.yaml:ro
       - ./letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
       # TODO: this does not work, auto routing to container names
