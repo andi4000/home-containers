@@ -2,3 +2,4 @@
 nextcloud/webroot
 heimdall/config
 traefik/letsencrypt
+*.swp
