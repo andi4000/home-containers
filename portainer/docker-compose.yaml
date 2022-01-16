@@ -14,7 +14,6 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAIN_NAME?}`)"
-      - "traefik.http.routers.portainer.tls=true"
       - "traefik.http.services.portainer-service.loadbalancer.server.port=9000"
 
       ## from: https://documentation.portainer.io/v2.0/ad/traefik/rp-traefik/

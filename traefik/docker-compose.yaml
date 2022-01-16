@@ -11,6 +11,7 @@ services:
       - "--log.level=DEBUG"
       - "--api.dashboard=true"
       - "--entryPoints.websecure.address=:443"
+      - "--entryPoints.websecure.http.tls=true"
       - "--entryPoints.web.address=:80"
       - "--entryPoints.web.http.redirections.entryPoint.to=websecure"
       - "--entryPoints.web.http.redirections.entryPoint.scheme=https"
@@ -57,7 +58,6 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.whoami.rule=Host(`whoami.${DOMAIN_NAME}`)"
-      - "traefik.http.routers.whoami.tls=true"
 
 networks:
   traefiknet:

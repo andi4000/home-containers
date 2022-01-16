@@ -68,7 +68,6 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.grafana.rule=Host(`mon.${DOMAIN_NAME?}`)"
-      - "traefik.http.routers.grafana.tls=true"
       - "traefik.services.grafana.loadbalancer.server.port=3000"
 
 networks:

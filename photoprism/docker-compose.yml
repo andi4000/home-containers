@@ -58,7 +58,6 @@ services:
       - "traefik.docker.network=traefiknet"       # necessary if container has multiple networks
       - "traefik.http.routers.photoprism.rule=Host(`${PHOTOPRISM_SITE_URL}`)"
       - "traefik.http.services.photoprism-service.loadbalancer.server.port=2342"
-      - "traefik.http.routers.photoprism.tls=true"
       - "ofelia.enabled=true"
       - "ofelia.job-exec.pp-import.schedule=@every 4h"
       - "ofelia.job-exec.pp-import.command=photoprism index --cleanup"
