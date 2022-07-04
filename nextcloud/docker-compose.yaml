@@ -4,7 +4,12 @@ version: "3"
 #   - https://github.com/nextcloud/docker/blob/master/.examples/docker-compose/insecure/mariadb/apache/docker-compose.yml
 #   - https://goneuland.de/nextcloud-server-mit-docker-compose-und-traefik-installieren/#6_Optimierungen
 #
-# Full documentation on github
+# Full documentation on Nextcloud's github
+#
+# Usage:
+#  - `mkdir webroot`
+#  - copy sample.env to .env, and edit content accordingly
+#  - make sure folders defined for "NC_PATH*" are created and has UID of 33
 #
 # Nextcloud CLI:
 #   docker-compose exec --user www-data app php occ
