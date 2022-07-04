@@ -14,20 +14,6 @@ version: "3"
 #   docker-compose pull
 #   docker-compose up -d
 #
-# TODO:
-#   - stress test
-#
-# DONE:
-#   - test NFS volumes --> not for webroot, due to PHP file locking situation
-#   - fix reverse proxy settings for apache (nextcloud admin > overview)
-#   - occassional error cron cannot run due to permission error (nextcloud admin > overview)
-#     --> data folder was not mounted in cron container
-#   - test update --> ran with above instructions, update docker, then run update on web.
-#     No problem from v20 to v21
-#
-# Troubleshooting:
-#   - can not mount NFS volume, permission denied --> check if `showmount -e YOURNAS`
-#     gives something back, otherwise fix the permission (authorized host) on your NAS
 
 volumes:
   nextcloud-userdata:
