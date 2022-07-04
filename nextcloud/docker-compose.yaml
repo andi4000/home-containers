@@ -15,27 +15,13 @@ version: "3"
 #   docker-compose up -d
 #
 
-volumes:
-  nextcloud-userdata:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${NFS_ADDR?},nolock,soft,rw"
-      device: ":${NFS_PATH_USERDATA?}"
-  nextcloud-db:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${NFS_ADDR?},nolock,soft,rw"
-      device: ":${NFS_PATH_DB?}"
-
 services:
   db:
     image: mariadb:10.5
     restart: always
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     volumes:
-      - nextcloud-db:/var/lib/mysql
+      - ${NC_PATH_DB?}:/var/lib/mysql
     networks:
       - nextcloud_internal
     environment:
@@ -56,7 +42,7 @@ services:
     networks:
       - nextcloud_internal
     volumes:
-      - nextcloud-userdata:/data
+      - ${NC_PATH_USERDATA?}:/data
       - ./webroot:/var/www/html
     entrypoint: /cron.sh
     depends_on:
@@ -75,7 +61,7 @@ services:
       - db
       - redis
     volumes:
-      - nextcloud-userdata:/data
+      - ${NC_PATH_USERDATA?}:/data
       - ./webroot:/var/www/html
     environment:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
