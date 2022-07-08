@@ -6,13 +6,13 @@ version: "3"
 #
 # Full documentation on Nextcloud's github
 #
+# Nextcloud CLI:
+#   docker-compose exec --user www-data app php occ
+#
 # Usage:
 #  - `mkdir webroot`
 #  - copy sample.env to .env, and edit content accordingly
 #  - make sure folders defined for "NC_PATH*" are created and has UID of 33
-#
-# Nextcloud CLI:
-#   docker-compose exec --user www-data app php occ
 #
 # To update:
 #   docker-compose down
