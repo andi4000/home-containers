@@ -26,8 +26,8 @@ services:
       # https://blog.thesparktree.com/traefik-advanced-config#automatic-subdomain-routing
       # - "--providers.docker.defaultRule=Host(`{{ index .Labels \"com.docker.compose.project\" }}.${DOMAIN_NAME:?domain unset}`)"
       # Ref: https://doc.traefik.io/traefik/observability/metrics/influxdb/
-      - "--metrics.influxDB.address=${DOMAIN_NAME:?}:8089"
-      - "--metrics.influxDB.database=traefik"
+      # - "--metrics.influxDB.address=${DOMAIN_NAME:?}:8089"
+      # - "--metrics.influxDB.database=traefik"
     ports:
       - 80:80
       - 443:443
