@@ -20,13 +20,14 @@ services:
       - "--providers.docker.network=traefiknet"  # necessary for container with multiple networks
       - "--certificatesResolvers.le.acme.storage=/letsencrypt/acme.json"
       - "--certificatesResolvers.le.acme.dnsChallenge.provider=cloudflare"
+      - "--certificatesResolvers.le.acme.dnsChallenge.resolvers=1.1.1.1:53"
       - "--certificatesResolvers.le.acme.dnsChallenge.delayBeforeCheck=0"
       # Auto routing to compose project, automatically appending TLD
       # https://blog.thesparktree.com/traefik-advanced-config#automatic-subdomain-routing
       # - "--providers.docker.defaultRule=Host(`{{ index .Labels \"com.docker.compose.project\" }}.${DOMAIN_NAME:?domain unset}`)"
       # Ref: https://doc.traefik.io/traefik/observability/metrics/influxdb/
-      - "--metrics.influxDB.address=${DOMAIN_NAME:?}:8089"
-      - "--metrics.influxDB.database=traefik"
+      # - "--metrics.influxDB.address=${DOMAIN_NAME:?}:8089"
+      # - "--metrics.influxDB.database=traefik"
     ports:
       - 80:80
       - 443:443

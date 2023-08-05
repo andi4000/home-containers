@@ -4,44 +4,21 @@ version: "3"
 #   - https://github.com/nextcloud/docker/blob/master/.examples/docker-compose/insecure/mariadb/apache/docker-compose.yml
 #   - https://goneuland.de/nextcloud-server-mit-docker-compose-und-traefik-installieren/#6_Optimierungen
 #
-# Full documentation on github
+# Full documentation on Nextcloud's github
 #
 # Nextcloud CLI:
 #   docker-compose exec --user www-data app php occ
+#
+# Usage:
+#  - `mkdir webroot`
+#  - copy sample.env to .env, and edit content accordingly
+#  - make sure folders defined for "NC_PATH*" are created and has UID of 33
 #
 # To update:
 #   docker-compose down
 #   docker-compose pull
 #   docker-compose up -d
 #
-# TODO:
-#   - stress test
-#
-# DONE:
-#   - test NFS volumes --> not for webroot, due to PHP file locking situation
-#   - fix reverse proxy settings for apache (nextcloud admin > overview)
-#   - occassional error cron cannot run due to permission error (nextcloud admin > overview)
-#     --> data folder was not mounted in cron container
-#   - test update --> ran with above instructions, update docker, then run update on web.
-#     No problem from v20 to v21
-#
-# Troubleshooting:
-#   - can not mount NFS volume, permission denied --> check if `showmount -e YOURNAS`
-#     gives something back, otherwise fix the permission (authorized host) on your NAS
-
-volumes:
-  nextcloud-userdata:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${NFS_ADDR?},nolock,soft,rw"
-      device: ":${NFS_PATH_USERDATA?}"
-  nextcloud-db:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${NFS_ADDR?},nolock,soft,rw"
-      device: ":${NFS_PATH_DB?}"
 
 services:
   db:
@@ -49,7 +26,7 @@ services:
     restart: always
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     volumes:
-      - nextcloud-db:/var/lib/mysql
+      - ${NC_PATH_DB?}:/var/lib/mysql
     networks:
       - nextcloud_internal
     environment:
@@ -70,7 +47,7 @@ services:
     networks:
       - nextcloud_internal
     volumes:
-      - nextcloud-userdata:/data
+      - ${NC_PATH_USERDATA?}:/data
       - ./webroot:/var/www/html
     entrypoint: /cron.sh
     depends_on:
@@ -89,7 +66,7 @@ services:
       - db
       - redis
     volumes:
-      - nextcloud-userdata:/data
+      - ${NC_PATH_USERDATA?}:/data
       - ./webroot:/var/www/html
     environment:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}

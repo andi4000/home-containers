@@ -21,6 +21,7 @@ services:
       PHOTOPRISM_HTTP_COMPRESSION: "gzip"            # Improves transfer speed and bandwidth utilization (none or gzip)
       PHOTOPRISM_DEBUG: "false"
       PHOTOPRISM_PUBLIC: "true"                     # No authentication required (disables password protection)
+      PHOTOPRISM_AUTH_MODE: "public"                # Since 2022-07-28 Release: public or password
       PHOTOPRISM_READONLY: "true"                   # Don't modify originals directory (reduced functionality)
       PHOTOPRISM_EXPERIMENTAL: "false"               # Enables experimental features
       PHOTOPRISM_DISABLE_WEBDAV: "false"             # Disables built-in WebDAV server
@@ -51,14 +52,14 @@ services:
     # Uncomment and edit the following line to set a specific user / group id (native):
     # user: "1000:1000"
     volumes:
-      - photoprism-originals:/photoprism/originals
-      - photoprism-storage:/photoprism/storage
+      - ${PP_PATH_ORIGINALS?}:/photoprism/originals
+      - ${PP_PATH_STORAGE?}:/photoprism/storage
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.photoprism.rule=Host(`${PHOTOPRISM_SITE_URL}`)"
       - "traefik.http.services.photoprism-service.loadbalancer.server.port=2342"
       - "ofelia.enabled=true"
-      - "ofelia.job-exec.pp-import.schedule=@every 4h"
+      - "ofelia.job-exec.pp-import.schedule=0 30 1 * * *"
       - "ofelia.job-exec.pp-import.command=photoprism index --cleanup"
       - "ofelia.job-exec.pp-import.no-overlap=true"
 
@@ -84,32 +85,13 @@ services:
       - apparmor:unconfined
     command: mysqld --transaction-isolation=READ-COMMITTED --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max-connections=512 --innodb-rollback-on-timeout=OFF --innodb-lock-wait-timeout=50
     volumes: # Don't remove permanent storage for index database files!
-      - photoprism-database:/var/lib/mysql
+      - ${PP_PATH_DB}:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASS?}
       MYSQL_DATABASE: ${MYSQL_DB_NAME?}
       MYSQL_USER: ${MYSQL_DB_USER?}
       MYSQL_PASSWORD: ${MYSQL_DB_PASS?}
 
-volumes:
-  photoprism-database:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${NFS_ADDR?},nolock,soft,rw"
-      device: ":${NFS_PATH_DB?}"
-  photoprism-storage:
-    driver: local
-    driver_opts:
-      type: nfs
-      o: "addr=${NFS_ADDR?},nolock,soft,rw"
-      device: ":${NFS_PATH_STORAGE?}"
-  photoprism-originals:
-    driver: local
-    driver_opts:
-      type: cifs
-      o: "username=${SMB_USER?},password=${SMB_PASS?}"
-      device: ${SMB_PATH_MEDIA?}
 
 networks:
   traefiknet:
