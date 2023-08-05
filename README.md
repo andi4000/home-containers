@@ -70,3 +70,7 @@ newgrp docker
 
 docker network create traefiknet
 ```
+
+Move ports 80 and 443 by Nginx of Synology so that traefik can handle that:
+See [this script](scripts/startup_script_for_traefik.sh)
+
