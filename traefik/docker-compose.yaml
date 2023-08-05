@@ -20,6 +20,7 @@ services:
       - "--providers.docker.network=traefiknet"  # necessary for container with multiple networks
       - "--certificatesResolvers.le.acme.storage=/letsencrypt/acme.json"
       - "--certificatesResolvers.le.acme.dnsChallenge.provider=cloudflare"
+      - "--certificatesResolvers.le.acme.dnsChallenge.resolvers=1.1.1.1:53"
       - "--certificatesResolvers.le.acme.dnsChallenge.delayBeforeCheck=0"
       # Auto routing to compose project, automatically appending TLD
       # https://blog.thesparktree.com/traefik-advanced-config#automatic-subdomain-routing
