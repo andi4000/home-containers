@@ -36,13 +36,13 @@ services:
       - MYSQL_USER=${MYSQL_USER?}
 
   redis:
-    image: redis:alpine
+    image: redis:7-alpine
     restart: always
     networks:
       - nextcloud_internal
 
   cron:
-    image: nextcloud:apache
+    image: nextcloud:24-apache
     restart: always
     networks:
       - nextcloud_internal
@@ -57,7 +57,7 @@ services:
       - NEXTCLOUD_DATA_DIR=/data
 
   app:
-    image: nextcloud:apache
+    image: nextcloud:24-apache
     restart: always
     networks:
       - nextcloud_internal
