@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   photoprism:
-    image: photoprism/photoprism:latest
+    image: photoprism/photoprism:240531
     restart: unless-stopped
     security_opt:
       - seccomp:unconfined
@@ -22,6 +22,7 @@ services:
       PHOTOPRISM_DISABLE_TLS: "true"                 # since Release 2023-07-19. TLS handled by traefik
       PHOTOPRISM_DEBUG: "false"
       PHOTOPRISM_PUBLIC: "true"                     # No authentication required (disables password protection)
+      PHOTOPRISM_INDEX_SCHEDULE: "30 1 * * *"
       PHOTOPRISM_AUTH_MODE: "public"                # Since 2022-07-28 Release: public or password
       PHOTOPRISM_READONLY: "true"                   # Don't modify originals directory (reduced functionality)
       PHOTOPRISM_EXPERIMENTAL: "false"               # Enables experimental features
@@ -59,22 +60,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.photoprism.rule=Host(`${PHOTOPRISM_SITE_URL}`)"
       - "traefik.http.services.photoprism-service.loadbalancer.server.port=2342"
-      - "ofelia.enabled=true"
-      - "ofelia.job-exec.pp-import.schedule=0 30 1 * * *"
-      - "ofelia.job-exec.pp-import.command=photoprism index --cleanup"
-      - "ofelia.job-exec.pp-import.no-overlap=true"
-
-  # Ref: https://github.com/mcuadros/ofelia
-  jobrunner:
-    image: mcuadros/ofelia:latest
-    restart: unless-stopped
-    command: daemon --docker
-    depends_on:
-      - photoprism
-    networks:
-      - photoprism_internal
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
 
   mariadb:
     image: mariadb:10.5
