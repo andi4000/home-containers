@@ -14,10 +14,14 @@ version: "3"
 #  - copy sample.env to .env, and edit content accordingly
 #  - make sure folders defined for "NC_PATH*" are created and has UID of 33
 #
-# To update:
+# To update minor version:
 #   docker-compose down
 #   docker-compose pull
 #   docker-compose up -d
+#
+# To update major version, increment image version by ONE, and boot the stack up. Check the app log
+# `docker-compose logs -f app` to see the status of the migration.
+# WARNING: Nextcloud does not support skipping major version
 #
 
 services:
