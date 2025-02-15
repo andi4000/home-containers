@@ -23,10 +23,18 @@ version: "3"
 # `docker-compose logs -f app` to see the status of the migration.
 # WARNING: Nextcloud does not support skipping major version
 #
+# To update mariadb, shutdown all, increment image version, then boot only the DB service to let `mariadb_upgrade` running,
+# once done, reboot whole stack.
+#	docker-compose down
+#   docker-compose pull
+#   docker-compose up -d db
+#   docker-compose logs db -f # wait until migration/upgrade finished
+#   docker-compose down && docker-compose up -d
+#
 
 services:
   db:
-    image: mariadb:10.5
+    image: mariadb:11.4
     restart: always
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
     volumes:
@@ -38,6 +46,7 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD?}
       - MYSQL_DATABASE=${MYSQL_DATABASE?}
       - MYSQL_USER=${MYSQL_USER?}
+      - MARIADB_AUTO_UPGRADE=1  # runs mariadb_upgrade automatically on start
 
   redis:
     image: redis:7-alpine
