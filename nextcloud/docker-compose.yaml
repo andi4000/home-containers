@@ -46,7 +46,7 @@ services:
       - nextcloud_internal
 
   cron:
-    image: nextcloud:27-apache
+    image: nextcloud:28-apache
     restart: always
     networks:
       - nextcloud_internal
@@ -61,7 +61,7 @@ services:
       - NEXTCLOUD_DATA_DIR=/data
 
   app:
-    image: nextcloud:27-apache
+    image: nextcloud:28-apache
     restart: always
     networks:
       - nextcloud_internal
