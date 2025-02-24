@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
   photoprism:
-    image: photoprism/photoprism:240915
+    image: photoprism/photoprism:250224
     restart: unless-stopped
     security_opt:
       - seccomp:unconfined
