@@ -29,6 +29,18 @@ Adjust the fields in `sample.env` and copy that file into `.env`. Check with
 #       This will change the home directory "~" to "/root" in your configuration.
 ```
 
+# Updating MariaDB
+
+To update mariadb, shutdown all, increment image version, then boot _only_ the DB service to let `mariadb_upgrade` running,
+once done, reboot whole stack.
+```
+docker-compose down
+docker-compose pull
+docker-compose up -d mariadb
+docker-compose logs db -f # wait until migration/upgrade finished
+docker-compose down && docker-compose up -d
+```
+
 # References
 - Documentation : https://docs.photoprism.org/getting-started/docker-compose/
 - Docker Hub URL: https://hub.docker.com/r/photoprism/photoprism/
