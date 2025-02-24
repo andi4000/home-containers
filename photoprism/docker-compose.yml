@@ -62,14 +62,22 @@ services:
       - "traefik.http.services.photoprism-service.loadbalancer.server.port=2342"
 
   mariadb:
-    image: mariadb:10.5
+    image: mariadb:11
     restart: unless-stopped
+    stop_grace_period: 5s
     networks:
       - photoprism_internal
     security_opt:
       - seccomp:unconfined
       - apparmor:unconfined
-    command: mariadbd --transaction-isolation=READ-COMMITTED --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max-connections=512 --innodb-rollback-on-timeout=OFF --innodb-lock-wait-timeout=50
+    command: >-
+        --innodb-buffer-pool-size=512M
+        --transaction-isolation=READ-COMMITTED
+        --character-set-server=utf8mb4
+        --collation-server=utf8mb4_unicode_ci
+        --max-connections=512
+        --innodb-rollback-on-timeout=OFF
+        --innodb-lock-wait-timeout=120
     volumes: # Don't remove permanent storage for index database files!
       - ${PP_PATH_DB}:/var/lib/mysql
     environment:
@@ -77,6 +85,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_DB_NAME?}
       MYSQL_USER: ${MYSQL_DB_USER?}
       MYSQL_PASSWORD: ${MYSQL_DB_PASS?}
+      MARIADB_AUTO_UPGRADE: 1
 
 
 networks:
