@@ -14,19 +14,19 @@ version: "3"
 #  - copy sample.env to .env, and edit content accordingly
 #  - make sure folders defined for "NC_PATH*" are created and has UID of 33
 #
-# To update minor version:
-#   docker-compose down
+# To update Nextcloud minor version:
 #   docker-compose pull
+#   docker-compose down
 #   docker-compose up -d
 #
-# To update major version, increment image version by ONE, and boot the stack up. Check the app log
+# To update Nextcloud major version, increment image version by ONE, and run pull, then down && up. Check the app log
 # `docker-compose logs -f app` to see the status of the migration.
 # WARNING: Nextcloud does not support skipping major version
 #
 # To update mariadb, shutdown all, increment image version, then boot only the DB service to let `mariadb_upgrade` running,
 # once done, reboot whole stack.
-#	docker-compose down
 #   docker-compose pull
+#	docker-compose down
 #   docker-compose up -d db
 #   docker-compose logs db -f # wait until migration/upgrade finished
 #   docker-compose down && docker-compose up -d
