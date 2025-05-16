@@ -42,7 +42,8 @@ services:
     environment:
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer  # Change temporarily to "Admin" to edit
+      - GF_DISABLE_LOGIN_FORM=true
     networks:
       - traefiknet
       - monitoring_internal
