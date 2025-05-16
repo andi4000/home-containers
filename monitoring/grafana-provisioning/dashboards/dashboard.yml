@@ -1,6 +1,6 @@
 apiVersion: 1
 providers:
-  - name: TrueNAS
+  - name: 'Prometheus'
     folder: ''
     type: file
     editable: true
